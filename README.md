@@ -1,6 +1,8 @@
 # Ketemu
 
-**Live site:** _add the Render URL here after deploying_ · **Source:** _add the GitHub URL here_
+**Live site:** https://ketemu-app-c0e20.containers.snapdeploy.app/
+
+**Source:** https://github.com/Squash07/ketemu
 
 Ketemu (Indonesian for "found it", and also "we meet") is a lost-property office for ITS on the web. Students post what they lost or found on campus, file claims with proof of ownership, and hand items over at an SKK (campus security) post. The finder approves a claim, both sides agree on a pickup post, and the item gets stamped returned.
 
@@ -32,7 +34,7 @@ Extras: notifications with an unread count (mark read, mark all read, delete, cl
 - PostgreSQL 16 through JDBC, HikariCP connection pool
 - jBCrypt for password hashing
 - Plain CSS with custom properties and a small vanilla JavaScript file
-- Maven, Docker; hosted on Render (web service) and Neon (PostgreSQL)
+- Maven, Docker; hosted on SnapDeploy (Docker container) and Neon (PostgreSQL)
 
 The app follows MVC: servlets are controllers, DAOs talk to the database with `PreparedStatement` only, and JSPs are views written with JSTL and EL (scripting is disabled in `web.xml`).
 
@@ -69,7 +71,7 @@ $CATALINA_HOME/bin/catalina.sh run
 | `DB_USER` | yes | Database user |
 | `DB_PASSWORD` | yes | Database password |
 | `DEMO_PASSWORD` | no | Password given to the seeded demo accounts on first start (default `ketemu123`) |
-| `PORT` | no | HTTP port. Render sets it automatically; the default is 8080. |
+| `PORT` | no | HTTP port. Most hosting platforms set it automatically; the default is 8080. |
 | `DB_POOL_SIZE` | no | Maximum connections in the pool (default 5) |
 
 ## Demo accounts
@@ -85,19 +87,19 @@ All demo accounts use the password from `DEMO_PASSWORD` (default `ketemu123`).
 
 ## Deployment
 
-The step-by-step guide for Render and Neon is in [docs/PANDUAN-DEPLOY.md](docs/PANDUAN-DEPLOY.md).
+The live site runs as a Docker container on SnapDeploy's free tier, with the database on Neon's free PostgreSQL. The app is built from the `Dockerfile` in this repository, and the database connection is set with the environment variables above. On the first start, the app creates the tables and loads the sample data by itself.
 
 Two things to know about the free tier:
 
-- Render free services sleep after 15 idle minutes, and the first visit afterwards takes about a minute. **Open the site 2 minutes before a demo.**
-- Render's filesystem is wiped on every restart, so photos are stored in PostgreSQL as `BYTEA` (max 1 MB each, 3 per item) and served with `ETag` and `Cache-Control` headers.
+- Free SnapDeploy containers sleep after about 15 idle minutes, and the first visit afterwards takes about a minute to wake up. **Open the site 2 minutes before a demo.**
+- The container's filesystem is not permanent, so photos are stored in PostgreSQL as `BYTEA` (max 1 MB each, 3 per item) and served with `ETag` and `Cache-Control` headers.
 
 ## Project structure
 
 ```
 ketemu/
 ├─ pom.xml, Dockerfile, docker-entrypoint.sh, docker-compose.yml, .env.example
-├─ docs/                     report material, ERDs, screenshots, deployment guide
+├─ docs/                     screenshots
 └─ src/main/
    ├─ java/id/ketemu/
    │  ├─ config/   Db (HikariCP from env vars), AppInit (creates schema and seed data)
