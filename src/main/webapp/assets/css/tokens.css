@@ -1,0 +1,42 @@
+/* Ketemu design tokens: the objects of a lost-property desk. */
+:root {
+  --wall: #EEF1EC;
+  --manila: #DDB46E;
+  --manila-light: #EAD09A;
+  --eyelet: #BE9548;
+  --well: #E9ECE6;
+  --ink: #2335C9;
+  --ink-deep: #16207F;
+  --stamp: #B8152F;
+  --graphite: #22252A;
+  --steel: #9AA3A8;
+  --muted: #565C63;
+  --muted-on-manila: #3D3420;
+  --paper: #FFFFFF;
+  --on-dark-muted: #C9CED2;
+
+  --font-sans: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-pen: "Shantell Sans", "Comic Neue", cursive;
+
+  --fs-display: clamp(44px, 6.2vw, 76px);
+  --fs-1: clamp(36px, 4.6vw, 56px);
+  --fs-2: 28px;
+  --fs-3: 20px;
+  --fs-body: 17px;
+  --fs-small: 15px;
+  --fs-tiny: 13px;
+
+  --radius: 4px;
+  --gutter: 32px;
+  --max: 1280px;
+  --target: 44px;
+
+  --tag-shape: polygon(24% 0, 76% 0, 100% 9%, 100% 100%, 0 100%, 0 9%);
+}
+
+@media (max-width: 640px) {
+  :root {
+    --gutter: 16px;
+    --fs-2: 24px;
+  }
+}
